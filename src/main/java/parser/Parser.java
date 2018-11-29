@@ -68,7 +68,7 @@ public class Parser {
 
                 //articleList.add(new Article(url,title, portion,timer,ingredients, instruction, urlJpg));
                 //db.PutToDB(title, ingredients, instruction, urlJpg);
-                //dbi.PutToDB(ingredients);
+                dbi.PutToDB(ingredients);
 
             });
             //if (i % 2 == 0){ articleList.forEach(System.out::println); }
