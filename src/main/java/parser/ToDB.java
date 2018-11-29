@@ -7,8 +7,10 @@ public class ToDB {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "1002199Timka";
 
-    private static final String INSERT_NEW = "INSERT INTO recipelist(recipeName,recipeInstruction,recipeImage) VALUES(?,?,?)";
+    private static final String INSERT_NEW = "INSERT INTO recipelist VALUES(?,?,?,?)";
     private static final String INSERT_NEW_INGREDIENT = "INSERT INTO allingredints VALUES(?)";
+    private static final String INSERT_NEW_INGREDS = "INSERT INTO ingred VALUES(?,?,?)";
+
 
 
     Connection connection = null;
@@ -28,12 +30,13 @@ public class ToDB {
 
 
 
-    public void PutToDB(String title,String instruction,String urlJpg){
+    public void PutToDB(int recipeID,String title,String instruction,String urlJpg){
         try {
             preparedStatement = connection.prepareStatement(INSERT_NEW);
-            preparedStatement.setString(1, title);
-            preparedStatement.setString(2, instruction);
-            preparedStatement.setString(3, urlJpg);
+            preparedStatement.setString(1, Integer.toString(recipeID));
+            preparedStatement.setString(2, title);
+            preparedStatement.setString(3, instruction);
+            preparedStatement.setString(4, urlJpg);
 
             preparedStatement.execute();
             preparedStatement.clearParameters();
@@ -55,6 +58,22 @@ public class ToDB {
         } catch (
                 SQLException e) {
             //System.out.println("*");
+        }
+    }
+
+    public void PutToDB(int recipeID,String ingredient, String quantity){
+        try {
+            preparedStatement = connection.prepareStatement(INSERT_NEW_INGREDS);
+
+            preparedStatement.setString(1, Integer.toString(recipeID));
+            preparedStatement.setString(2, ingredient);
+            preparedStatement.setString(3, quantity);
+
+            preparedStatement.execute();
+            preparedStatement.clearParameters();
+        } catch (
+                SQLException e) {
+            e.printStackTrace();
         }
     }
 

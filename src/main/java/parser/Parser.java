@@ -8,12 +8,13 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Parser {
     public static void Parse(){
         ToDB db = new ToDB();
         List<Article> articleList = new ArrayList<>();
-        int j = 1;
+        AtomicInteger recipeID = new AtomicInteger(1);
 
         for (Integer i = new Integer(1);i < 2; i++){
 
@@ -51,10 +52,7 @@ public class Parser {
                 }*/
 
                 //String ingredients = "";
-                Elements bElements = recipePage.getElementsByAttributeValue("class", "js-tooltip js-tooltip-ingredient");
-                for(Element element : bElements) {
-                    db.PutToDB(element.text());
-                }
+
 
                 String instruction = "";
                 Elements iElements = recipePage.getElementsByAttributeValue("class", "recipe__steps");
@@ -66,9 +64,15 @@ public class Parser {
 
 
                 //articleList.add(new Article(url,title, portion,timer,ingredients, instruction, urlJpg));
-                db.PutToDB(title, instruction, urlJpg);
+                db.PutToDB(recipeID.get(),title, instruction, urlJpg);
                 //dbi.PutToDB(ingredients);
-
+                //МАГИЯ!!! НЕ ТРОГАТЬ!!!
+                Elements bElements = recipePage.getElementsByAttributeValue("class", "ingredients-list layout__content-col").first().getElementsByAttributeValue("class","ingredients-list__content-item content-item js-cart-ingredients");
+                for(Element element : bElements) {
+                    //db.PutToDB(element.text());
+                    db.PutToDB(recipeID.get(),element.child(0).text(),element.child(1).text());
+                }
+                recipeID.getAndIncrement();
             });
             //if (i % 2 == 0){ articleList.forEach(System.out::println); }
         }
