@@ -7,7 +7,9 @@ public class ToDB {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "1002199Timka";
 
-    private static final String INSERT_NEW = "INSERT INTO recipelist VALUES(?,?,?,?)";
+    private static final String INSERT_NEW = "INSERT INTO recipelist(recipeName,recipeInstruction,recipeImage) VALUES(?,?,?)";
+    private static final String INSERT_NEW_INGREDIENT = "INSERT INTO allingredints VALUES(?)";
+
 
     Connection connection = null;
     PreparedStatement preparedStatement = null;
@@ -26,21 +28,37 @@ public class ToDB {
 
 
 
-    public void PutToDB(String title,String ingredients,String instruction,String urlJpg){
+    public void PutToDB(String title,String instruction,String urlJpg){
         try {
             preparedStatement = connection.prepareStatement(INSERT_NEW);
             preparedStatement.setString(1, title);
-            preparedStatement.setString(2, ingredients);
-            preparedStatement.setString(3, instruction);
-            preparedStatement.setString(4, urlJpg);
+            preparedStatement.setString(2, instruction);
+            preparedStatement.setString(3, urlJpg);
 
             preparedStatement.execute();
             preparedStatement.clearParameters();
         } catch (
                 SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
+
+
+    public void PutToDB(String ingredients){
+        try {
+            preparedStatement = connection.prepareStatement(INSERT_NEW_INGREDIENT);
+
+            preparedStatement.setString(1, ingredients);
+
+            preparedStatement.execute();
+            preparedStatement.clearParameters();
+        } catch (
+                SQLException e) {
+            //System.out.println("*");
+        }
+    }
+
+
 
     public void CloseConnection(){
         try {

@@ -12,11 +12,10 @@ import java.util.List;
 public class Parser {
     public static void Parse(){
         ToDB db = new ToDB();
-        ToIngredDB dbi = new ToIngredDB();
         List<Article> articleList = new ArrayList<>();
         int j = 1;
 
-        for (Integer i = new Integer(10);i < 21; i++){
+        for (Integer i = new Integer(1);i < 2; i++){
 
             Document doc = null;
             try {
@@ -51,10 +50,10 @@ public class Parser {
                     ingredients += element.text() + " ";
                 }*/
 
-                String ingredients = "";
+                //String ingredients = "";
                 Elements bElements = recipePage.getElementsByAttributeValue("class", "js-tooltip js-tooltip-ingredient");
                 for(Element element : bElements) {
-                    dbi.PutToDB(element.text());
+                    db.PutToDB(element.text());
                 }
 
                 String instruction = "";
@@ -67,13 +66,15 @@ public class Parser {
 
 
                 //articleList.add(new Article(url,title, portion,timer,ingredients, instruction, urlJpg));
-                //db.PutToDB(title, ingredients, instruction, urlJpg);
-                dbi.PutToDB(ingredients);
+                db.PutToDB(title, instruction, urlJpg);
+                //dbi.PutToDB(ingredients);
 
             });
             //if (i % 2 == 0){ articleList.forEach(System.out::println); }
         }
         articleList.forEach(System.out::println);
+
+
         db.CloseConnection();
     }
 }
