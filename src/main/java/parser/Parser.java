@@ -16,7 +16,8 @@ public class Parser {
         List<Article> articleList = new ArrayList<>();
         AtomicInteger recipeID = new AtomicInteger(1);
 
-        for (Integer i = new Integer(1);i < 2; i++){
+        for (Integer i = new Integer(1);i < 100; i++){
+            System.out.println(i);
 
             Document doc = null;
             try {
@@ -67,7 +68,7 @@ public class Parser {
                 db.PutToDB(recipeID.get(),title, instruction, urlJpg);
                 //dbi.PutToDB(ingredients);
                 //МАГИЯ!!! НЕ ТРОГАТЬ!!!
-                Elements bElements = recipePage.getElementsByAttributeValue("class", "ingredients-list layout__content-col").first().getElementsByAttributeValue("class","ingredients-list__content-item content-item js-cart-ingredients");
+                Elements bElements = recipePage.getElementsByAttributeValue("class", "ingredients-list layout__content-col").first().getElementsByAttributeValue("class", "ingredients-list__content-item content-item js-cart-ingredients");
                 for(Element element : bElements) {
                     //db.PutToDB(element.text());
                     db.PutToDB(recipeID.get(),element.child(0).text(),element.child(1).text());
